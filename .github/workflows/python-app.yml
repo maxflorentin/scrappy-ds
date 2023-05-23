@@ -25,4 +25,17 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Scrappy run
       run: |
-        python scrapper.py $price
+        python scrapper.py ${{ secrets.PRICE }} > output.txt
+
+    - name: Send email
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: smtp-mail.outlook.com
+        server_port: 587
+        username: ${{ secrets.EMAIL_USERNAME }}
+        password: ${{ secrets.EMAIL_PASSWORD }}
+        subject: "Scraper Output"
+        body: |
+          Here is the output of the scraper:
+
+          $(cat output.txt)
