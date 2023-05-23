@@ -36,6 +36,7 @@ jobs:
         password: ${{ secrets.EMAIL_PASSWORD }}
         subject: "Scraper Output"
         to: romi.fndz87@gmail.com
+        from: "El gordo tetón" 
         body: |
           Here is the output of the scraper:
 
