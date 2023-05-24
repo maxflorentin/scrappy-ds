@@ -9,9 +9,7 @@ permissions:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python 3.10
@@ -26,9 +24,21 @@ jobs:
     - name: Scrappy run
       run: |
         python scrapper.py ${{ secrets.PRICE }} > output.txt
-
+    - name: Read output file
+      id: read_file
+      run: |
+        echo "::set-output name=content::$(cat output.txt)"
+    - name: Check if output has content
+      id: check_content
+      run: |
+        if [[ -s output.txt ]]; then
+          echo "::set-output name=has_content::true"
+        else
+          echo "::set-output name=has_content::false"
+        fi
     - name: Send email
       uses: dawidd6/action-send-mail@v3
+      if: steps.check_content.outputs.has_content == 'true'
       with:
         server_address: smtp.gmail.com
         secure: true
@@ -36,7 +46,9 @@ jobs:
         username: ${{ secrets.EMAIL_USERNAME }}
         password: ${{ secrets.EMAIL_PASSWORD }}
         subject: "Scraper Output"
-        to: romi.fndz87@gmail.com
-        from: "El gordo tetón" 
-        body: "Here is the output of the scraper."
-        attachments: output.txt
+        to: ${{ secrets.EMAIL_TO }}
+        from: ${{ secrets.FROM }}
+        body: |
+          Here is the output of the scraper:
+
+          ${{ steps.read_file.outputs.content }}
