@@ -23,8 +23,8 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Scrappy run
       run: |
-        python scrapper.py ${{ secrets.URL1 }} ${{ secrets.PRICE }} > output.txt
-        python scrapper.py ${{ secrets.URL2 }} ${{ secrets.PRICE }} >> output.txt
+        python scrapper.py "${{ secrets.URL1 }}" ${{ secrets.PRICE }} > output.txt
+        python scrapper.py "${{ secrets.URL2 }}" ${{ secrets.PRICE }} >> output.txt
     - name: Read output file
       id: read_file
       run: |
