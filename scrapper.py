@@ -29,9 +29,10 @@ def scrape_products(url, max_price):
 
 # Configuración del argumento de línea de comandos
 parser = argparse.ArgumentParser()
+parser.add_argument('url', type=str, help='URL del sitio web')
 parser.add_argument('max_price', type=float, help='Precio máximo')
 args = parser.parse_args()
 
+url = args.url
 max_price = args.max_price
 scrape_products(base_url, max_price)
-
