@@ -23,23 +23,23 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Scrappy run
       run: |
-        python scrapper.py "${{ secrets.URL1 }}" ${{ secrets.PRICE }} > output.txt
-        python scrapper.py "${{ secrets.URL2 }}" ${{ secrets.PRICE }} >> output.txt
+        python scrapper.py ${{ secrets.URL1 }} ${{ secrets.PRICE }} > output.txt
+        python scrapper.py ${{ secrets.URL2 }} ${{ secrets.PRICE }} >> output.txt
     - name: Read output file
       id: read_file
       run: |
-        echo "::set-env name=SCRAPPER_OUTPUT::$(cat output.txt)"
+        echo "::set-output name=SCRAPPER_OUTPUT::$(cat output.txt)"
     - name: Check if output has content
       id: check_content
       run: |
         if [[ -s output.txt ]]; then
-          echo "::set-output name=has_content::true"
+          echo "has_content=true" >> $GITHUB_ENV
         else
-          echo "::set-output name=has_content::false"
+          echo "has_content=false" >> $GITHUB_ENV
         fi
     - name: Send email
       uses: dawidd6/action-send-mail@v3
-      if: steps.check_content.outputs.has_content == 'true'
+      if: env.has_content == 'true'
       with:
         server_address: smtp.gmail.com
         secure: true
