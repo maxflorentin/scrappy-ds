@@ -28,7 +28,7 @@ jobs:
     - name: Read output file
       id: read_file
       run: |
-        echo "::set-output name=content::$(cat output.txt)"
+        echo "::set-env name=SCRAPPER_OUTPUT::$(cat output.txt)"
     - name: Check if output has content
       id: check_content
       run: |
@@ -52,4 +52,4 @@ jobs:
         body: |
           Here is the output of the scraper:
 
-          ${{ steps.read_file.outputs.content }}
+          ${{ env.SCRAPPER_OUTPUT }}
