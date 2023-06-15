@@ -48,7 +48,7 @@ jobs:
         password: ${{ secrets.EMAIL_PASSWORD }}
         subject: "Scraper Output"
         to: ${{ secrets.EMAIL_TO }}
-        from: ${{ secrets.FROM }}
+        from: ${{ secrets.EMAIL_FROM }}
         body: |
           Here is the output of the scraper:
 
