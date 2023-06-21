@@ -22,13 +22,14 @@ jobs:
         pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Scrappy run
+      id: script
       run: |
         python scrapper.py "${{ secrets.URL1 }}" ${{ secrets.PRICE }} > output.txt
         python scrapper.py "${{ secrets.URL2 }}" ${{ secrets.PRICE }} >> output.txt
     - name: Read output file
       id: read_file
       run: |
-        echo "::set-output name=SCRAPPER_OUTPUT::$(cat output.txt)"
+        echo "::set-output name=SCRAPPER_OUTPUT::$(cat output.txt)" >> $GITHUB_OUTPUT
     - name: Check if output has content
       id: check_content
       run: |
@@ -52,4 +53,4 @@ jobs:
         body: |
           Here is the output of the scraper:
 
-          ${{ env.SCRAPPER_OUTPUT }}
+          "${{ GITHUB_OUTPUT }}:"
