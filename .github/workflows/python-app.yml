@@ -53,4 +53,4 @@ jobs:
         body: |
           Here is the output of the scraper:
 
-          "${{ GITHUB_OUTPUT }}:"
+          "${{ env.GITHUB_OUTPUT }}:"
